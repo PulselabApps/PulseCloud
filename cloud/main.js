@@ -309,5 +309,41 @@ Parse.Cloud.define("pushMe", function(request, response) {
       console.log(error);
       response.success(error);
     }
-  })
-})
+  });
+});
+
+Parse.Cloud.define("isTeacher", function(request, response) {
+    if(!req.params.username) {
+        response.error("Username not provided");
+    }
+    
+    var queryRole = new Parse.Query(Parse.Role);
+    queryRole.equalTo('name', 'Teacher');
+    
+    queryRole.first({
+        success: function(r) {
+            var role = r;
+            var relation = new Parse.Relation(role, 'users');
+            var teachers = relation.query();
+            
+            teachers.equalTo('username', req.params.username);
+            teachers.first({
+                success: function(u) {
+                    var user = u;
+                    
+                    if(user) {
+                        response.success('User is teacher');
+                    } else {
+                        response.error('User is not teacher');
+                    }
+                },
+                error: function() {
+                    response.error('Error on user Lookup');
+                }
+            })
+        },
+        error: function() {
+            response.error('User admin check failed');
+        }
+    });
+});
