@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Pulse": {
+      "applicationId": "AR6NF8FvJQFx0zurn9snBroZi2S68SCRBIRMudo7"
+    },
+    "_default": {
+      "link": "Pulse"
+    }
+  }
+}
